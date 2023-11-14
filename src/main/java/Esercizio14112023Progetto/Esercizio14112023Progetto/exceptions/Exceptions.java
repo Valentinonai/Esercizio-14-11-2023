@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Date;
 import java.util.List;
 @RestControllerAdvice
@@ -32,6 +34,20 @@ public class Exceptions {
 public ErrorPayload unauthorized(Unauthorized e){
         return new ErrorPayload(e.getMessage(),new Date());
 }
+    @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorPayload handleUnauthorized(HttpClientErrorException.Unauthorized e){
+        return new ErrorPayload(e.getMessage(), new Date());
+    }
+@ExceptionHandler(AccessDeniedException.class)
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+public ErrorPayload accessDenied(AccessDeniedException e){return new ErrorPayload(e.getMessage(), new Date());}
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN) // 403
+    public ErrorPayload handleAccessDenied(org.springframework.security.access.AccessDeniedException e){
+        return new ErrorPayload(e.getMessage(), new Date());
+    }
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorPayload serverError(Exception e){

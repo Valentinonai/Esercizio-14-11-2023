@@ -71,7 +71,7 @@ public class UserController {
 
     //----------ENDPOINT /me---------
 
-    @DeleteMapping("/me")
+    @DeleteMapping("/delete/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@AuthenticationPrincipal User u)
     {

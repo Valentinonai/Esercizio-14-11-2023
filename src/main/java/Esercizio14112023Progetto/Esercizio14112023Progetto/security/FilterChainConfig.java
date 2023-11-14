@@ -16,12 +16,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class FilterChainConfig {
     @Autowired
     private CustomFilter customFilter;
+    @Autowired
+    private FilterExceptions filterExceptions;
     @Bean
     SecurityFilterChain securityFilterChainConfig(HttpSecurity http) throws Exception {
         http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
         http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable());
+
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(filterExceptions,CustomFilter.class);
         http.authorizeHttpRequests(request->request.requestMatchers("/**").permitAll());
 
         return http.build();
