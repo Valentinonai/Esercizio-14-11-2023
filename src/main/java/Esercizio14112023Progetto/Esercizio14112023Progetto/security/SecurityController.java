@@ -30,6 +30,6 @@ public class SecurityController {
             throw new BadRequest(validation.getAllErrors());
         }
          User u=userService.createUser(userPayload);
-        return new TokenPayload(securityService.autenticazione(new LogInDTO(u.getEmail(),u.getPassword())));
+        return new TokenPayload(securityService.autenticazione(new LogInDTO(u.getEmail(),userPayload.password())));
     }
 }

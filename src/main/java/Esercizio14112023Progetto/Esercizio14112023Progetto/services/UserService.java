@@ -14,9 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.Encoder;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class UserService {
     private Cloudinary cloudinary;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public Page<User> getAllUsers(int page, int size, String order){
@@ -41,7 +45,7 @@ public class UserService {
     }
 
     public User createUser(UserPayload userPayload){
-        User u=User.builder().nome(userPayload.nome()).cognome(userPayload.cognome()).email(userPayload.email()).username(userPayload.nome()+"_"+userPayload.cognome()).ruolo(Ruolo.USER).password(userPayload.password()).imageUrl("https://picsum.photos/200/300").build();
+        User u=User.builder().nome(userPayload.nome()).cognome(userPayload.cognome()).email(userPayload.email()).username(userPayload.nome()+"_"+userPayload.cognome()).ruolo(Ruolo.USER).password(passwordEncoder.encode(userPayload.password())).imageUrl("https://picsum.photos/200/300").build();
         userRepository.save(u);
         return u;
     }

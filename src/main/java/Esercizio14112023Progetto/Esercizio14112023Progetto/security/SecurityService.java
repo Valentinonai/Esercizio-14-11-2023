@@ -6,6 +6,7 @@ import Esercizio14112023Progetto.Esercizio14112023Progetto.exceptions.Unauthoriz
 import Esercizio14112023Progetto.Esercizio14112023Progetto.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import Esercizio14112023Progetto.Esercizio14112023Progetto.security.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,10 +15,12 @@ public class SecurityService {
     private JWTTools jwtTools;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public String autenticazione(LogInDTO body){
         User u=userService.findByEmail(body.email());
-        if(u.getPassword().equals(body.password())){
+        if(passwordEncoder.matches(body.password(),u.getPassword())){
             return jwtTools.creaToken(u);
         }
         else{
