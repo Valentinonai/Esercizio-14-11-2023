@@ -33,7 +33,7 @@ public class CustomFilter extends OncePerRequestFilter {
             jwtTools.verificaToken(token);
             String id=jwtTools.getId(token);
             User u=userService.getSingleUser(Integer.parseInt(id));
-            Authentication a=new UsernamePasswordAuthenticationToken(u,null);
+            Authentication a=new UsernamePasswordAuthenticationToken(u,null,u.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(a);
             filterChain.doFilter(request,response);
         }

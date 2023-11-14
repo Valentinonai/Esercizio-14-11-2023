@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public User createUser(UserPayload userPayload){
-        User u=User.builder().nome(userPayload.nome()).cognome(userPayload.cognome()).email(userPayload.email()).username(userPayload.nome()+"_"+userPayload.cognome()).password(userPayload.password()).imageUrl("https://picsum.photos/200/300").build();
+        User u=User.builder().nome(userPayload.nome()).cognome(userPayload.cognome()).email(userPayload.email()).username(userPayload.nome()+"_"+userPayload.cognome()).ruolo(Ruolo.USER).password(userPayload.password()).imageUrl("https://picsum.photos/200/300").build();
         userRepository.save(u);
         return u;
     }

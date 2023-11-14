@@ -20,8 +20,9 @@ public class FilterChainConfig {
     SecurityFilterChain securityFilterChainConfig(HttpSecurity http) throws Exception {
         http.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+        http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable());
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.authorizeHttpRequests(request->request.requestMatchers("/**").permitAll());
+        http.authorizeHttpRequests(request->request.requestMatchers("/**").permitAll());
 
         return http.build();
     }
